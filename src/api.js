@@ -1,4 +1,4 @@
-const API='http://localhost:8081/api'
+const API='https://rental-hub-backend-1.onrender.com'
 function auth(){const t=sessionStorage.getItem('rhToken');return t?{Authorization:'Bearer '+t}:{} }
 async function handle(r){if(r.status===401||r.status===403){sessionStorage.removeItem('rhToken');sessionStorage.removeItem('rhUser');if(location.pathname!=='/login'&&location.pathname!=='/register')location.href='/login';throw new Error('Your session is not authorized. Please login again.')}if(!r.ok){let m=`Request failed (${r.status})`;try{const d=await r.json();if(d.message)m=d.message}catch{}throw new Error(m)}return r.status===204?null:r.json()}
 const req=(url,opt={})=>fetch(url,{...opt,headers:{...auth(),...(opt.headers||{})}}).then(handle)
